@@ -1,10 +1,18 @@
 #!/bin/bash
 
+export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
 echo "max_parallel_downloads=10" 1>>/etc/dnf/dnf.conf
 dnf update
-dnf install -y vim epel-release
+dnf install -y vim epel-release net-tools
 dnf install -y htop
 systemctl disable --now firewalld
+
+cat 1>>/etc/sysctl.conf << EOF
+net.ipv6.conf.all.disable_ipv6=1
+EOF
+
+sysctl -p
 
 rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-4.el8.noarch.rpm
 
@@ -30,11 +38,10 @@ zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-charact
 echo 'set global log_bin_trust_function_creators = 0;' | mysql
 
 sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix/zabbix_server.conf
-sed -i 's/#        listen          8080/        listen          80/g' /etc/nginx/conf.d/zabbix.conf
-sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-sed -i '38,57 s/^/#/' /etc/nginx/nginx.conf
+sed -i 's/#        listen          8080/        listen          8080/g' /etc/nginx/conf.d/zabbix.conf
+sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
+#sed -i '38,57 s/^/#/' /etc/nginx/nginx.conf
 
 systemctl enable zabbix-server zabbix-agent nginx php-fpm
 
 reboot;exit
-

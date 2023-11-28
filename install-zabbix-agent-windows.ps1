@@ -4,4 +4,3 @@ $out = "C:\zabbix_agent.msi"
 Invoke-WebRequest -uri $uri -OutFile $out
 
 Start-Process C:\zabbix_agent.msi
-
