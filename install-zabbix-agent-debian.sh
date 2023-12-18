@@ -33,8 +33,6 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 PluginSocket=/run/zabbix/agent.plugin.sock
 ControlSocket=/run/zabbix/agent.sock
 AllowKey=system.run[*]
-DenyKey=system.run[*]
-Include=./zabbix_agent2.d/plugins.d/*.conf
 EOF
 
 echo 'zabbix ALL=(ALL) NOPASSWD:/bin/systemctl restart systemd-timesyncd.service' 1>>/etc/sudoers
