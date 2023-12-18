@@ -12,3 +12,8 @@ ansible-galaxy collection install community.mysql
 ansible-galaxy collection install community.general
 
 ansible-playbook cpnv-gsi/ansible/playbook.yml
+
+sed -i 's/^Listen 80$/Listen 8080/g' /etc/apache2/ports.conf
+sed -i 's/:80>$/:8080>/g' /etc/apache2/sites-available/000-default.conf
+
+systemctl restart apache2.service
