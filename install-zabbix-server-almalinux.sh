@@ -51,6 +51,7 @@ cat 1>/etc/logrotate.d/zabbix-server << EOF
 }
 EOF
 
+cat 1>/etc/logrotate.d/nginx-access << EOF
 /var/log/nginx/access.log {
     size 5M
     rotate 14
