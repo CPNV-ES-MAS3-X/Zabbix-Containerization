@@ -2,6 +2,8 @@
 
 export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
+timedatectl set-timezone Europe/Zurich
+
 echo "max_parallel_downloads=10" 1>>/etc/dnf/dnf.conf
 dnf update
 dnf install -y vim epel-release net-tools
