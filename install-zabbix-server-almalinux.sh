@@ -51,15 +51,15 @@ cat 1>/etc/logrotate.d/zabbix-server << EOF
 }
 EOF
 
-cat 1>/etc/logrotate.d/nginx-access << EOF
-/var/log/nginx/access.log {
+cat 1>/etc/logrotate.d/nginx << EOF
+/var/log/nginx/*log {
     size 5M
     rotate 14
     copytruncate
     compress
     missingok
     notifempty
-    create 0664 zabbix zabbix
+    create 0644 root root
 }
 EOF
 
