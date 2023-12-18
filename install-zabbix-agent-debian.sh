@@ -35,8 +35,17 @@ ControlSocket=/run/zabbix/agent.sock
 AllowKey=system.run[*]
 EOF
 
-echo 'zabbix ALL=(ALL) NOPASSWD:/bin/systemctl restart systemd-timesyncd.service' 1>>/etc/sudoers
-echo 'zabbix ALL=(ALL) NOPASSWD:/bin/systemctl restart systemd-timesyncd' 1>>/etc/sudoers
+cat 1>/etc/sudoers << EOF 
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Defaults        use_pty
+root    ALL=(ALL:ALL) ALL
+zabbix ALL=(ALL) NOPASSWD:/bin/systemctl restart systemd-timesyncd.service
+zabbix ALL=(ALL) NOPASSWD:/bin/systemctl restart systemd-timesyncd
+%sudo   ALL=(ALL:ALL) ALL
+@includedir /etc/sudoers.d
+EOF
 
 systemctl enable zabbix-agent2.service
 systemctl restart zabbix-agent2.service
