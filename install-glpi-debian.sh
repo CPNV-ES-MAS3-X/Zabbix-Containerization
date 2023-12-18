@@ -2,13 +2,6 @@
 
 export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
-cat 1>>/etc/sysctl.conf << EOF
-net.ipv6.icmp.echo_ignore_all=1
-net.ipv6.conf.all.disable_ipv6=1
-EOF
-
-sysctl -p
-
 cd
 
 apt-get install -y git ansible python3-pymysql
