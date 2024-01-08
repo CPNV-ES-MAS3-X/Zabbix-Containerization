@@ -20,7 +20,7 @@ bash mariadb_repo_setup --mariadb-server-version=10.6
 
 dnf install -y MariaDB-server MariaDB-client
 
-systemctl enable --now mariadb
+systemctl enable --now mariadb.service
 
 dnf install -y zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent
 
