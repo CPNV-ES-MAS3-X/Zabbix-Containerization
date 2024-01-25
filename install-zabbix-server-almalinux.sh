@@ -37,7 +37,7 @@ sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix_server.conf
 sed -i 's/#        listen          8080/        listen          8080/g' /etc/nginx/conf.d/zabbix.conf
 sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 
-systemctl enable zabbix-server zabbix-agent nginx php-fpm
+systemctl enable zabbix-server-mysql zabbix-agent nginx php-fpm
 
 cat 1>/etc/logrotate.d/zabbix-server << EOF
 /var/log/zabbix/*.log {
