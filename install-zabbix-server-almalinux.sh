@@ -20,7 +20,7 @@ bash mariadb_repo_setup --mariadb-server-version=10.6
 
 dnf install -y MariaDB-server MariaDB-client
 
-systemctl enable --now mariadb.service
+systemctl enable --now mariadb
 
 dnf install -y zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent
 
@@ -33,14 +33,16 @@ zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-charact
 
 echo 'set global log_bin_trust_function_creators = 0;' | mysql
 
+systemctl enable zabbix-server zabbix-agent nginx php-fpm
+
+systemctl start zabbix-server
+
 sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix/zabbix_server.conf
 sed -i 's/#        listen          8080/        listen          8080/g' /etc/nginx/conf.d/zabbix.conf
 sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 
-systemctl enable zabbix-server zabbix-agent nginx php-fpm
-
 cat 1>/etc/logrotate.d/zabbix-server << EOF
-/var/log/zabbix/zabbix_server.log {
+/var/log/zabbix/*.log {
     size 5M
     rotate 14
     copytruncate
@@ -48,6 +50,16 @@ cat 1>/etc/logrotate.d/zabbix-server << EOF
     missingok
     notifempty
     create 0664 zabbix zabbix
+}
+
+/var/log/zabbixsrv/zabbix_server.log {
+    size 5M
+    rotate 14
+    copytruncate
+    compress
+    missingok
+    notifempty
+    create 0664 zabbixsrv zabbixsrv
 }
 EOF
 
