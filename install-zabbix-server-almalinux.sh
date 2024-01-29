@@ -46,7 +46,7 @@ systemctl enable zabbix-server-mysql zabbix-agent nginx php-fpm
 
 if [[ ! -f /var/log/zabbixsrv/zabbix_server.log ]]; then
     cat 1>/etc/logrotate.d/zabbix-server << EOF
-/var/log/zabbix/*.log {
+/var/log/zabbix/zabbix_server.log {
     size 5M
     rotate 14
     copytruncate
@@ -58,16 +58,6 @@ if [[ ! -f /var/log/zabbixsrv/zabbix_server.log ]]; then
 EOF
 else
     cat 1>/etc/logrotate.d/zabbix-server << EOF
-/var/log/zabbix/*.log {
-    size 5M
-    rotate 14
-    copytruncate
-    compress
-    missingok
-    notifempty
-    create 0664 zabbix zabbix
-}
-
 /var/log/zabbixsrv/zabbix_server.log {
     size 5M
     rotate 14
@@ -80,8 +70,8 @@ else
 EOF
 fi
 
-cat 1>/etc/logrotate.d/zabbix-server << EOF
-/var/log/zabbix/*.log {
+cat 1>/etc/logrotate.d/zabbix-agent << EOF
+/var/log/zabbix/zabbix_agentd.log {
     size 5M
     rotate 14
     copytruncate
@@ -89,16 +79,6 @@ cat 1>/etc/logrotate.d/zabbix-server << EOF
     missingok
     notifempty
     create 0664 zabbix zabbix
-}
-
-/var/log/zabbixsrv/zabbix_server.log {
-    size 5M
-    rotate 14
-    copytruncate
-    compress
-    missingok
-    notifempty
-    create 0664 zabbixsrv zabbixsrv
 }
 EOF
 
