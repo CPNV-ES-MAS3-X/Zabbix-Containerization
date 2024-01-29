@@ -33,6 +33,7 @@ Include=/etc/zabbix/zabbix_agent2.d/*.conf
 PluginSocket=/run/zabbix/agent.plugin.sock
 ControlSocket=/run/zabbix/agent.sock
 AllowKey=system.run[*]
+Plugins.ZabbixSync.System.Capacity=1
 EOF
 
 cat 1>/etc/sudoers << EOF 
