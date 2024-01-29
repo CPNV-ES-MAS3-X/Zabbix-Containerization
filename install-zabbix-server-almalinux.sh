@@ -44,6 +44,42 @@ sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 
 systemctl enable zabbix-server-mysql zabbix-agent nginx php-fpm
 
+if [[ ! -f /var/log/zabbixsrv/zabbix_server.log ]]; then
+    cat 1>/etc/logrotate.d/zabbix-server << EOF
+/var/log/zabbix/*.log {
+    size 5M
+    rotate 14
+    copytruncate
+    compress
+    missingok
+    notifempty
+    create 0664 zabbix zabbix
+}
+EOF
+else
+    cat 1>/etc/logrotate.d/zabbix-server << EOF
+/var/log/zabbix/*.log {
+    size 5M
+    rotate 14
+    copytruncate
+    compress
+    missingok
+    notifempty
+    create 0664 zabbix zabbix
+}
+
+/var/log/zabbixsrv/zabbix_server.log {
+    size 5M
+    rotate 14
+    copytruncate
+    compress
+    missingok
+    notifempty
+    create 0664 zabbixsrv zabbixsrv
+}
+EOF
+fi
+
 cat 1>/etc/logrotate.d/zabbix-server << EOF
 /var/log/zabbix/*.log {
     size 5M
