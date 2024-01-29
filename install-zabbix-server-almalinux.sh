@@ -33,7 +33,12 @@ zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-charact
 
 echo 'set global log_bin_trust_function_creators = 0;' | mysql
 
-sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix_server.conf
+if [[ ! -f /etc/zabbix/zabbix_server.conf ]]; then
+    sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix_server.conf
+elif [[ ! -f /etc/zabbix_server.conf ]]; then
+    sed -i 's/# DBPassword=/DBPassword=password/g' /etc/zabbix/zabbix_server.conf
+fi
+
 sed -i 's/#        listen          8080/        listen          8080/g' /etc/nginx/conf.d/zabbix.conf
 sed -i 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/selinux/config
 
